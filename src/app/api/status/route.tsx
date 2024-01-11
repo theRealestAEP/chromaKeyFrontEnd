@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     }
     // console.log(taskId)
     try {
-        const res = await fetch(`http://localhost:8080/status/${taskId}`, {
+        const res = await fetch(`https://backend.removegreenscreen.com:8080/status/${taskId}`, {
             method: 'GET'
         });
 

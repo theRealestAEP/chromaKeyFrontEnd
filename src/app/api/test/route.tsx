@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: 'Not Allowed' }, { status: 405 });
     }
     try {
-        const res = await fetch(`http://localhost:8080/test`, {
+        const res = await fetch(`https://backend.removegreenscreen.com:8080/test`, {
             method: 'GET'
         });
 

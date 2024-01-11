@@ -13,28 +13,28 @@ export function GridStatus() {
 
     const [tasks, setTasks] = useState<Task[]>([])
 
-    const downloadFile = async (taskId: string) => {
-        const url = `http://backend.removegreenscreen.com:8080/download/${taskId}.webm`
-        try {
-            const response = await fetch(url);
+    // const downloadFile = async (taskId: string) => {
+    //     const url = `https://backend.removegreenscreen.com:8080/download/${taskId}.webm`
+    //     try {
+    //         const response = await fetch(url);
 
-            if (!response.ok) {
-                throw new Error('File not found or an error occurred');
-            }
+    //         if (!response.ok) {
+    //             throw new Error('File not found or an error occurred');
+    //         }
 
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = taskId; 
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(downloadUrl);
-        } catch (error) {
-            console.error('Error downloading file:', error);
-        }
-    }
+    //         const blob = await response.blob();
+    //         const downloadUrl = window.URL.createObjectURL(blob);
+    //         const a = document.createElement('a');
+    //         a.href = downloadUrl;
+    //         a.download = taskId; 
+    //         document.body.appendChild(a);
+    //         a.click();
+    //         a.remove();
+    //         window.URL.revokeObjectURL(downloadUrl);
+    //     } catch (error) {
+    //         console.error('Error downloading file:', error);
+    //     }
+    // }
 
     const getStatusData = async () => {
         const data = localStorage.getItem('tasks')
@@ -87,7 +87,7 @@ export function GridStatus() {
                     .map(task => (
                         <div key={task.taskId} className="task-item">
                             <span>{task.name || task.taskId}</span>
-                            {task.status === 'completed' && <button onClick={() => downloadFile(task.taskId)} className="status">✓ Download</button>}
+                            {task.status === 'completed' && <button onClick={() => window.open(`https://backend.removegreenscreen.com:8080/download/${task.taskId}.webm`, '_blank')} className="status">✓ View</button>}
                             {task.status === 'error' && <span className="status">✗ Error</span>}
                             {task.status === 'processing' && <span className="status">In progress</span>}
                         </div>

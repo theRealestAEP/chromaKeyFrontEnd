@@ -40,21 +40,27 @@ export function GridStatus() {
         const data = localStorage.getItem('tasks')
         if (data) {
             const tasks = JSON.parse(data)
-   
+
             if (tasks.length > 0) {
                 for (let i = 0; i < tasks.length; i++) {
 
                     if (!tasks[i].status || tasks[i].status == 'processing') {
-                        const response = await fetch(`/api/status?taskId=${encodeURIComponent(tasks[i].taskId)}`, {
-                            method: 'GET'
-                        });
-                        if (response.ok && response.status === 200) {
-                            const dataStatus = await response.json(); // Parse the response body as JSON
-                            if (dataStatus && dataStatus.taskInfo) {
-                                tasks[i].status = dataStatus.taskInfo.status;
+                        typeof (tasks[i].taskId)
+                        if (typeof (tasks[i].taskId) == 'undefined') {
+                            tasks[i].status == 'error'
+                        }
+                        else {
+                            const response = await fetch(`/api/status?taskId=${encodeURIComponent(tasks[i].taskId)}`, {
+                                method: 'GET'
+                            });
+                            if (response.ok && response.status === 200) {
+                                const dataStatus = await response.json(); // Parse the response body as JSON
+                                if (dataStatus && dataStatus.taskInfo) {
+                                    tasks[i].status = dataStatus.taskInfo.status;
 
-                                if (tasks[i].status == 'completed') {
-                                    tasks[i].download = dataStatus.taskInfo.downloadLink;
+                                    if (tasks[i].status == 'completed') {
+                                        tasks[i].download = dataStatus.taskInfo.downloadLink;
+                                    }
                                 }
                             }
                         }
@@ -83,7 +89,7 @@ export function GridStatus() {
             {tasks.length === 0 ? (
                 <div className="empty-state">No tasks found</div>
             ) : (
-                tasks.sort((a:any, b:any) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+                tasks.sort((a: any, b: any) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
                     .map(task => (
                         <div key={task.taskId} className="task-item">
                             <span>{task.name || task.taskId}</span>

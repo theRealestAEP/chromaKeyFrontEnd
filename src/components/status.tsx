@@ -10,16 +10,11 @@ interface Task {
 }
 
 export function GridStatus() {
-    // const [tasks, setTasks] = useState([
-    //     { taskId: 'task1', status: 'in-progress' },
-    //     { taskId: 'task2', status: 'error' },
-    //     { taskId: 'task3', status: 'complete' }
-    // ]);
+
     const [tasks, setTasks] = useState<Task[]>([])
-    // console.log(tasks.length)
 
     const downloadFile = async (taskId: string) => {
-        const url = `http://localhost:8080/download/${taskId}.webm`
+        const url = `http://backend.removegreenscreen.com:8080/download/${taskId}.webm`
         try {
             const response = await fetch(url);
 
@@ -31,7 +26,7 @@ export function GridStatus() {
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = downloadUrl;
-            a.download = taskId; // You can set a specific file name here
+            a.download = taskId; 
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -45,22 +40,16 @@ export function GridStatus() {
         const data = localStorage.getItem('tasks')
         if (data) {
             const tasks = JSON.parse(data)
-            // console.log(tasks)
+   
             if (tasks.length > 0) {
-
-                // console.log(tasks[0].download)
                 for (let i = 0; i < tasks.length; i++) {
-                    // console.log(JSON.stringify(tasks[i]))
-                    // console.log(tasks[i].status)
 
                     if (!tasks[i].status || tasks[i].status == 'processing') {
                         const response = await fetch(`/api/status?taskId=${encodeURIComponent(tasks[i].taskId)}`, {
                             method: 'GET'
                         });
-                        // console.log(response);
                         if (response.ok && response.status === 200) {
                             const dataStatus = await response.json(); // Parse the response body as JSON
-                            // console.log(dataStatus);
                             if (dataStatus && dataStatus.taskInfo) {
                                 tasks[i].status = dataStatus.taskInfo.status;
 
@@ -74,7 +63,6 @@ export function GridStatus() {
                 }
                 localStorage.setItem('tasks', JSON.stringify(tasks))
                 setTasks(tasks)
-                // console.log(tasks)
             }
 
         }

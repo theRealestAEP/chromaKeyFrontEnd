@@ -16,7 +16,7 @@ export function UploadForm() {
       const formData = new FormData();
       
       formData.append('video', file); // Ensure the field name matches with the backend
-      const res = await fetch('https://backend.removegreenscreen.com:8080', {
+      const res = await fetch('https://backend.removegreenscreen.com:8080/upload', {
         method: 'POST',
         body: formData
       });

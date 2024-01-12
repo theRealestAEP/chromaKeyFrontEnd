@@ -56,11 +56,27 @@ export function GridStatus() {
                             if (response.ok && response.status === 200) {
                                 const dataStatus = await response.json(); // Parse the response body as JSON
                                 if (dataStatus && dataStatus.taskInfo) {
+                                    if(tasks[i].errorCount){
+                                        tasks[i].errorCount = 0
+                                    }
                                     tasks[i].status = dataStatus.taskInfo.status;
 
                                     if (tasks[i].status == 'completed') {
                                         tasks[i].download = dataStatus.taskInfo.downloadLink;
                                     }
+                                }
+                                if (dataStatus && dataStatus.error) {
+                                    tasks[i].errorCount += 1
+                                    if (tasks[i].errorCount >= 20) {
+                                        tasks[i].status = 'error'
+                                    }
+
+                                }
+                            }
+                            if (response.status === 504) {
+                                tasks[i].errorCount += 1
+                                if (tasks[i].errorCount >= 20) {
+                                    tasks[i].status = 'error'
                                 }
                             }
                         }

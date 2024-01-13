@@ -11,7 +11,7 @@ export default function Home() {
       <div>
         <header className='header-container'>
           <h1>Green Screen Remover</h1>
-          <p>Converts your green screen video (.mp4) (.avi) etc... to a webm with a transparent background</p>
+          <p>Converts your green screen video (.mp4) (.avi) etc... to a webm with a transparent background with a 1:1 video ratio</p>
         </header>
         <div className='main-container'>
           <div className='upload-box '>

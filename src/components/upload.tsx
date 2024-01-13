@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export function UploadForm() {
   const [file, setFile] = useState<File>()
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
+
 
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -13,6 +15,7 @@ export function UploadForm() {
     if (!file) return
     const fileName = file.name; // Accessing the name of the file
     // console.log("Uploaded file name:", fileName);
+    setIsLoading(true); // Start loading
 
     try {
       const formData = new FormData();
@@ -41,6 +44,8 @@ export function UploadForm() {
     } catch (e: any) {
       toast.error(`Error: ${e.message}`);
       console.error(e);
+    } finally {
+      setIsLoading(false); // Stop loading regardless of success or failure
     }
   }
 
@@ -52,7 +57,8 @@ export function UploadForm() {
           name="file"
           onChange={(e) => setFile(e.target.files?.[0])}
         />
-        <input type="submit" value="Upload" />
+        <input type="submit" value="Upload" disabled={isLoading} />
+        {isLoading && <span>Loading...</span>} {/* Spinner or loading text */}
       </form>
       <ToastContainer />
     </div>
